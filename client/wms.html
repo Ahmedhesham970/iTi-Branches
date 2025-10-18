@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/x-icon" href="./public/itiLogo.png" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add ITI Branch</title>
+    <link rel="stylesheet" href="main.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <header>
+      <nav>
+         <div class="logo">
+          <img src="./public/itiLogo.png" alt="ITI Logo" class="header-logo" />
+        </div>
+        <ul>
+          <li><a href="./index.html">HOME</a></li>
+          <li><a href="./wfs.html">WFS</a></li>
+          <li><a href="./wms.html">WMS</a></li>
+          <li><a href="./full.html">WFS-Sym</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div class="form-container">
+        <h1>Add ITI Branch</h1>
+        <form id="branch-form">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" />
+
+          <label for="lon">X (Longitude):</label>
+          <input type="number" id="lon" name="lon" step="any" />
+
+          <label for="lat">Y (Latitude):</label>
+          <input type="number" id="lat" name="lat" step="any" />
+
+          <label for="tracks">Tracks:</label>
+          <input type="text" id="tracks" name="tracks" />
+          <button type="submit">Add Branch</button>
+        </form>
+      </div>
+
+      <div id="map"></div>
+    </main>
+
+    <footer>
+      <p>© Information Technology Institute | Geoinformatics Department</p>
+    </footer>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <!-- <script src="./wms.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
