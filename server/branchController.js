@@ -13,7 +13,7 @@ const getallBranches = async (req, res) => {
       data: rows,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       status: "error",
       message: error.message,
     });
@@ -62,7 +62,7 @@ const addBranch = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Error inserting branch:", error);
-    res.status(500).json({
+    res.status(400).json({
       status: "error",
       message: error.message,
     });

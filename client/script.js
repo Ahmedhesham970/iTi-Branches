@@ -1,18 +1,24 @@
 document.addEventListener("DOMContentLoaded", async function () {
   const page = window.location.pathname.split("/").pop();
 
-  if (page === "index.html") initIndexPage();
+  if (page === "index.html") setupBaseMap();
   else if (page === "wfs.html") initWFSPage();
   else if (page === "wms.html") initWMSPage();
   else if (page === "full.html") initFullPage();
 });
 
-function initIndexPage() {
-  const map = setupBaseMap();
+function setupBaseMap() {
+  const map = L.map("map").setView([26.8206, 30.8025], 6);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
   addMessage(map);
 
   // await loadBranches(map);
   enableAddBranch(map);
+  return map;
 }
 
 function initWFSPage() {
@@ -56,8 +62,8 @@ function initWFSPage() {
           }),
       }).addTo(map);
 
-      const bounds = layer.getBounds();
-      if (bounds.isValid && bounds.isValid()) map.fitBounds(bounds);
+      // const bounds = layer.getBounds();
+      // if (bounds.isValid && bounds.isValid()) map.fitBounds(bounds);
     })
     .catch((err) => console.error("❌ WFS Error:", err));
 }
@@ -82,20 +88,7 @@ function initFullPage() {
   const map = setupBaseMap();
   addMessage(map);
   enableAddBranch(map);
-
   loadBranches(map);
-  // addWFSLayer(map);
-  // addWMSLayer(map);
-}
-
-function setupBaseMap() {
-  const map = L.map("map").setView([26.8206, 30.8025], 6);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
-  return map;
 }
 
 function addMessage(map) {
@@ -151,7 +144,6 @@ async function loadBranches(map) {
             </div>
           </div>`;
         marker.bindPopup(popupContent);
-        
       });
 
       markers.push([lat, lon]);
@@ -213,56 +205,4 @@ function enableAddBranch(map) {
       });
     }
   });
-}
-function addWFSLayer(map) {
-  const wfsUrl =
-    "http://localhost:8085/geoserver/ITI-BRANCHES/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ITI-BRANCHES:iti_branches&outputFormat=application/json";
-
-  fetch(wfsUrl)
-    .then((res) => res.json())
-    .then((geojson) => {
-      L.geoJSON(geojson, {
-        onEachFeature: (f, l) => {
-          l.bindPopup(`<b>${f.properties.name}</b><br>${f.properties.tracks}`);
-        },
-      }).addTo(map);
-    })
-    .catch((err) => console.error("WFS Error:", err));
-}
-
-function addWMSLayer(map) {
-  L.tileLayer
-    .wms("http://localhost:8085/geoserver/ITI-BRANCHES/wms", {
-      layers: "ITI-BRANCHES:iti_branches",
-      format: "image/png",
-      transparent: true,
-      version: "1.1.0",
-    })
-    .addTo(map);
-}
-
-function addWFSLayer(map) {
-  const wfsUrl =
-    "http://localhost:8085/geoserver/ITI-BRANCHES/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ITI-BRANCHES%3AiTi%20Branches&outputFormat=application%2Fjson";
-  fetch(wfsUrl)
-    .then((res) => res.json())
-    .then((geojson) =>
-      L.geoJSON(geojson, {
-        onEachFeature: (f, l) =>
-          l.bindPopup(
-            `<b>${f.properties?.name}</b><br>${f.properties?.tracks}`
-          ),
-      }).addTo(map)
-    );
-}
-
-function addWMSLayer(map) {
-  L.tileLayer
-    .wms("http://localhost:8085/geoserver/ITI-BRANCHES/wms", {
-      layers: "ITI-BRANCHES:iTi Branches",
-      format: "image/png",
-      transparent: true,
-      version: "1.1.0",
-    })
-    .addTo(map);
 }
